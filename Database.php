@@ -3,15 +3,11 @@ require_once 'config.php';
 class Database {
     private $conn;
     private $lastQuery;
-    public function __construct() {
-        $this->connect();
+    public function __construct($db_server, $db_user, $db_pass, $db_name) {
+        $this->connect($db_server, $db_user, $db_pass, $db_name);
        $this->lastQuery="";
     }
-    public function connect(){
-        global $db_server;
-        global $db_pass;
-        global $db_name;
-        global $db_user;
+    public function connect($db_server, $db_user, $db_pass, $db_name){
          $this->conn= mysqli_connect($db_server, $db_user, $db_pass, $db_name);        
         if(mysqli_connect_errno()){
             die(mysqli_connect_error());
@@ -31,7 +27,7 @@ class Database {
        } 
     }
     public function getNumRows($result){
-        //$res=$this->query($result);
+        $res=$this->query($result);
         return mysqli_num_rows($result);
     }
     public function getAffectedRows(){
@@ -45,6 +41,6 @@ class Database {
     }
   
 }
-$db= new Database();
+$db= new Database($db_server, $db_user, $db_pass, $db_name);
 
 ?>
