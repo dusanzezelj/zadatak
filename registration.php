@@ -1,6 +1,5 @@
 <?php
-require_once 'User.php';
-require_once 'NaturalUser';
+require_once 'NaturalUser.php';
 function check(&$post, $n){
     global $db;
     foreach ($n as $value){
@@ -12,11 +11,12 @@ function check(&$post, $n){
     }
 }
     if(isset($_POST['submited'])){
+        global $db;
         if($_POST['type']==1){
             $n=array("username", "password", "email", "phone", "mobile", "first", "last", "address", "city", "country");
             check($_POST, $n);
             try{
-            User::authenticate($_POST['username'], $_POST['password']);
+            NaturalUser::authenticate($_POST['username'], $_POST['password']);
                 $user= new NaturalUser($db, $_POST['username'], $_POST['password'], $_POST['email'],$_POST['phone'],
                         $_POST['mobile'], $_POST['first'], $_POST['last'], $_POST['address'], $_POST['city'], $_POST['country']);
                 $user->create();
