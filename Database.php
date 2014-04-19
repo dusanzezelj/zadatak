@@ -39,6 +39,9 @@ class Database {
     public function fetchArray($result){
         return mysqli_fetch_array($result);
     }
+    public function escapeString($value){
+        return mysqli_real_escape_string($this->conn,$value); 
+    }
   
 }
 $db= new Database($db_server, $db_user, $db_pass, $db_name);

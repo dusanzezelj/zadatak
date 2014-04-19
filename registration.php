@@ -1,9 +1,37 @@
+<?php
+require_once 'User.php';
+require_once 'NaturalUser';
+function check(&$post, $n){
+    global $db;
+    foreach ($n as $value){
+        if(empty($post[$value])){
+            echo "prazan string";
+            exit();
+        }
+        $post[$value]= $db->escapeString(trim($post[$value]));
+    }
+}
+    if(isset($_POST['submited'])){
+        if($_POST['type']==1){
+            $n=array("username", "password", "email", "phone", "mobile", "first", "last", "address", "city", "country");
+            check($_POST, $n);
+            try{
+            User::authenticate($_POST['username'], $_POST['password']);
+                $user= new NaturalUser($db, $_POST['username'], $_POST['password'], $_POST['email'],$_POST['phone'],
+                        $_POST['mobile'], $_POST['first'], $_POST['last'], $_POST['address'], $_POST['city'], $_POST['country']);
+                $user->create();
+        } catch (Exception $e){ echo "$e->getMessage()";}
+        }
+    } else {
+        echo 'nije submitovana forma';
+    }
+?>
 <html>
     <head>
         <title>Registration</title>
     </head>
     <body>
-        <form method="POST" action="reg.php">
+        <form method="POST" action="registration.php">
             <table>
                 <tr><td>User name:</td><td><input type="text" name="username"></td></tr>
                 <tr><td>Password:</td><td><input type="text" name="password"></td></tr>
@@ -14,13 +42,13 @@
                             <option value="1">natural person</option>
                             <option value="2">legal person</option>
                         </select></td></tr>
-                <tr><td colspan="2" align="center">Natural person</td></tr>
+                <tr><td colspan="2" align="center">Natural user</td></tr>
                 <tr><td>First name:</td><td><input type="text" name="first"></td></tr>
                 <tr><td>Last name:</td><td><input type="text" name="last"></td></tr>
                 <tr><td>Address:</td><td><input type="text" name="address"></td></tr>
                 <tr><td>City:</td><td><input type="text" name="city"></td></tr>
                 <tr><td>Country:</td><td><input type="text" name="country"></td></tr>
-                 <tr><td colspan="2" align="center">Legal person</td></tr>
+                 <tr><td colspan="2" align="center">Legal user</td></tr>
                  <tr><td>Company name:</td><td><input type="text" name="companyname"></td></tr>
                  <tr><td>Company address:</td><td><input type="text" name="companyaddress"></td></tr>
                  <tr><td>Company city:</td><td><input type="text" name="companycity"></td></tr>
