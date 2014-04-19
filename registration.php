@@ -4,7 +4,7 @@ function check(&$post, $n){
     global $db;
     foreach ($n as $value){
         if(empty($post[$value])){
-            echo "prazan string";
+            echo "empty field";
             exit();
         }
         $post[$value]= $db->escapeString(trim($post[$value]));
@@ -15,12 +15,13 @@ function check(&$post, $n){
         if($_POST['type']==1){
             $n=array("username", "password", "email", "phone", "mobile", "first", "last", "address", "city", "country");
             check($_POST, $n);
-            try{
-            NaturalUser::authenticate($_POST['username'], $_POST['password']);
-                $user= new NaturalUser($db, $_POST['username'], $_POST['password'], $_POST['email'],$_POST['phone'],
+            try{         
+                $user= new NaturalUser($db, $_POST['username'], sha1($_POST['password']), $_POST['email'],$_POST['phone'],
                         $_POST['mobile'], $_POST['first'], $_POST['last'], $_POST['address'], $_POST['city'], $_POST['country']);
-                $user->create();
-        } catch (Exception $e){ echo "$e->getMessage()";}
+                $user->authenticate($_POST['username'], $_POST['password']);
+                $id=$user->create();
+                echo 'user created with id: '. $id;
+        } catch (Exception $e){ echo $e->getMessage(); }
         }
     } else {
         echo 'nije submitovana forma';

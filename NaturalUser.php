@@ -1,5 +1,5 @@
 <?php
-require_once 'User';
+require_once 'User.php';
 
 class NaturalUser extends User{
    private $firstName, $lastName, $address, $city, $country;
@@ -16,9 +16,10 @@ class NaturalUser extends User{
        $query.=" values ('$this->firstName', '$this->lastName', '$this->userName', '$this->password', '$this->email', '$this->phone', ";
        $query.="'$this->mobile', '$this->address', '$this->city', '$this->country', 1, 1)";
        $result= $this->db->query($query);
-       if(!result){
-           throw new Exception("Greska u izvrsavanju upita");
+       if(!$result){
+           throw new Exception("Error in executing query!");
        }
+       return $this->db->getLastInsertID();
    }
    
 }

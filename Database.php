@@ -28,7 +28,7 @@ class Database {
     }
     public function getNumRows($result){
         $res=$this->query($result);
-        return mysqli_num_rows($result);
+        return mysqli_num_rows($res);
     }
     public function getAffectedRows(){
         return mysqli_affected_rows($this->conn);

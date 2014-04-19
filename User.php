@@ -11,7 +11,7 @@ abstract class User {
         $this->password=$password;
         $this->userName=$userName;
     }
-    public static function authenticate($username, $password){
+    public function authenticate($username, $password){
         $query="select * from user where UserName='".$username."' and Password='".sha1($password)."'";
         $num=$this->db->getNumRows($query);
         if($num > 0){
